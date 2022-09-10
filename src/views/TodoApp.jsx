@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {TodoList} from '../components/TodoList'
 import {useDispatch, useSelector} from 'react-redux'
-import {loadTodos, removeTodo} from '../store/actions/todoActions'
+import {loadTodos, removeTodo, setFilterBy} from '../store/actions/todoActions'
+import {TodoFilter} from '../components/TodoFilter'
 
 export const TodoApp = () => {
   const {todos} = useSelector((state) => state.todoModule)
@@ -16,25 +17,31 @@ export const TodoApp = () => {
     dispatch(removeTodo(todoId))
   }
 
+  const onChangeFilter = useCallback(async (filterBy) => {
+    // setState({ filterBy }, loadRobots)
+    await dispatch(setFilterBy(filterBy))
+    dispatch(loadTodos())
+  }, [])
+
   if (!todos) return <div>Loading...</div>
   return (
     // <div classNameName="todo-app">
     //   <TodoList todos={todos} onDelete={onDelete} />
     // </div>
-    <div>
+    <>
       <main className="top-header">
         <header className="header container-layout flex">
           <div className="flex">
             <i className="logo-cam fa-solid fa-camera"></i>
-            {/* <photo-filter @setFilter="setFilter" /> */}
-            <span v-if="user">
-              {/* <img
+            <TodoFilter onChangeFilter={onChangeFilter} />
+            {/* <span v-if="user">
+              <img
             @click="userPage"
             className="avatar"
             src="@/assets/portrait.png"
             alt=""
-          /> */}
-            </span>
+          />
+            </span> */}
           </div>
           <ul className="links clean-list flex">
             <li>Explore</li>
@@ -69,6 +76,6 @@ export const TodoApp = () => {
           </ul>
         </div>
       </main>
-    </div>
+    </>
   )
 }

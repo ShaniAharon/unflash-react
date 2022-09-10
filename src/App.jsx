@@ -7,7 +7,7 @@ import {TodoApp} from './views/TodoApp'
 function App() {
   return (
     <section className=" ">
-      <AppHeader />
+      {/* <AppHeader /> */}
       <Routes>
         <Route path="/edit" element={<TodoEdit />}>
           <Route path=":id" element={<TodoEdit />} />
